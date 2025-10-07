@@ -1,0 +1,22 @@
+[
+  {
+    "userId": "demo-user-id",
+    "title": "Netflix - Streaming",
+    "username": "movie.fanatic@email.com",
+    "password": "U2FsdGVkX1+849I1eCeIPL1eKzueZO9MbGWat8GsHijIIu5A7furBNzDui0hkikX",
+    "url": "https://www.netflix.com/login",
+    "notes": "U2FsdGVkX1+XyV/r/aUDtkl4bBvfYcPUrg5cYlQWU8BTti+u1yt8arWsDT42SBhzBgDwEyuM+zaHr7SAuHNzwa36VOE8x3PtxDLkLAmEKG4rMsYl7eV/x2nfYfsVqPvp",
+    "createdAt": "2025-10-07T05:18:05.037Z",
+    "_id": "17598142850377vdgkn8mu"
+  },
+  {
+    "userId": "demo-user-id",
+    "title": "Coursera - Data Science Course",
+    "username": "setu.learner@gmail.com",
+    "password": "U2FsdGVkX18e69Mr6tABCosWl2IeAw/ebu3jydkcYhi6T1Iw0XKUl3GMblidw/SO",
+    "url": "https://www.coursera.org/?authMode=login",
+    "notes": "",
+    "createdAt": "2025-10-07T05:19:03.111Z",
+    "_id": "17598143431113ggms5qoa"
+  }
+]
