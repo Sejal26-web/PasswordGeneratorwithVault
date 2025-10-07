@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { getDatabase } from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
 export async function PUT(
   request: NextRequest,
@@ -29,7 +30,7 @@ export async function PUT(
 
     const db = await getDatabase();
     const result = await db.collection('vault').updateOne(
-      { _id: params.id, userId: payload.userId },
+      { _id: new ObjectId(params.id), userId: payload.userId },
       {
         $set: {
           title,
@@ -72,7 +73,7 @@ export async function DELETE(
 
     const db = await getDatabase();
     const result = await db.collection('vault').deleteOne({
-      _id: params.id,
+      _id: new ObjectId(params.id),
       userId: payload.userId,
     });
 
