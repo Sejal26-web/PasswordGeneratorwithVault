@@ -1,6 +1,6 @@
 import { MongoClient, Db } from 'mongodb';
 
-const MONGODB_URI = process.env.MONGODB_URI!;
+const MONGODB_URI = process.env.MONGO_URI!;
 const MONGODB_DB = process.env.MONGODB_DB || 'password-manager';
 
 let cachedClient: MongoClient | null = null;
