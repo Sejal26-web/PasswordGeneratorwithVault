@@ -1,1 +1,30 @@
-{}
+{
+  "name": "password-generator-vault",
+  "version": "1.0.0",
+  "description": "A secure password generator and vault built using Next.js, Node.js, and MongoDB.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "build": "next build"
+  },
+  "keywords": [
+    "password",
+    "generator",
+    "vault",
+    "nextjs",
+    "mongodb",
+    "security"
+  ],
+  "author": "Sejal Ranka",
+  "license": "MIT",
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "mongoose": "^8.0.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "dotenv": "^16.4.0"
+  }
+}
