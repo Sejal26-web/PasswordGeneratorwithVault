@@ -1,35 +1,93 @@
+// project/app/api/vault/[id]/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
-import { generateToken } from '@/lib/auth';
+import { verifyToken } from '@/lib/auth';
+import { getDatabase } from '@/lib/mongodb';
+import { ObjectId } from 'mongodb'; // FIX: Imported ObjectId
 
-export async function POST(request: NextRequest) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { email, password } = await request.json();
+    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    if (!email || !password) {
+    const payload = verifyToken(token);
+    if (!payload) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { title, username, password, url, notes } = body;
+
+    if (!title || !password) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
+        { error: 'Title and password are required' },
         { status: 400 }
       );
     }
 
-    if (password.length < 8) {
-      return NextResponse.json(
-        { error: 'Password must be at least 8 characters' },
-        { status: 400 }
-      );
+    const db = await getDatabase();
+    const objectId = new ObjectId(params.id); // FIX: Convert ID string to ObjectId
+
+    const result = await db.collection('vault').updateOne(
+      { _id: objectId, userId: payload.userId }, // FIX: Use ObjectId in the query
+      {
+        $set: {
+          title,
+          username: username || '',
+          password,
+          url: url || '',
+          notes: notes || '',
+          updatedAt: new Date(),
+        },
+      }
+    );
+
+    if (result.modifiedCount === 0) {
+      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
     }
 
-    // For demo purposes, skip database and just generate token
-    const userId = 'demo-user-id';
-    const token = generateToken({
-      userId,
-      email,
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const payload = verifyToken(token);
+    if (!payload) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
+
+    const db = await getDatabase();
+    const objectId = new ObjectId(params.id); // FIX: Convert ID string to ObjectId
+    
+    const result = await db.collection('vault').deleteOne({
+      _id: objectId, // FIX: Use ObjectId in the query
+      userId: payload.userId,
     });
 
-    return NextResponse.json({
-      token,
-      user: { id: userId, email },
-    });
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error' },
